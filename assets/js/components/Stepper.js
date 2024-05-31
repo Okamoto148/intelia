@@ -6,6 +6,7 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Input from './Input';
+import Finish from './Finish';
 import axios from 'axios';
 import Grid from '@mui/material/Grid';
 import AccountCircle from '@mui/icons-material/AccountCircle';
@@ -15,6 +16,7 @@ import AddRoadIcon from '@mui/icons-material/AddRoad';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 import Looks3Icon from '@mui/icons-material/Looks3';
 import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
+
 
 
 const steps = ['Dados Pessoais', 'Endereço', 'Contato'];
@@ -158,7 +160,6 @@ export default function HorizontalLinearStepper() {
 const handleBirthdayChange = (rawValue) => {
   const cleanedValue = rawValue.replace(/\D/g, ''); 
   let maskedValue = '';
-  console.log('handleBirthdayChange funcionando');
 
   if (cleanedValue.length <= 6) {
     maskedValue = cleanedValue.replace(/(\d{2})(\d{1,2})/, '$1/$2');
@@ -188,19 +189,13 @@ const handleBirthdayChange = (rawValue) => {
   
   const handleCelularChange = (event) => {
     let newCelular = event;
-
-    // Remove caracteres não numéricos
     newCelular = newCelular.replace(/\D/g, '');
-
-    // Aplica a máscara de celular (19) 99999-9999
     if (newCelular.length > 2) {
       newCelular = `(${newCelular.slice(0, 2)}) ${newCelular.slice(2)}`;
     }
     if (newCelular.length > 8) {
       newCelular = `${newCelular.slice(0, 10)}-${newCelular.slice(10)}`;
     }
-
-    // Atualiza o estado do celular
 	if(newCelular.length<=15){
 		setCelular(newCelular);
 	}
@@ -209,11 +204,7 @@ const handleBirthdayChange = (rawValue) => {
   
   const handleTelefoneFixoChange = (event) => {
     let newTelefoneFixo = event;
-
-    // Remove caracteres não numéricos
     newTelefoneFixo = newTelefoneFixo.replace(/\D/g, '');
-
-    // Aplica a máscara de telefone fixo (19) 9999-9999
     if (newTelefoneFixo.length > 2) {
       newTelefoneFixo = `(${newTelefoneFixo.slice(0, 2)}) ${newTelefoneFixo.slice(2)}`;
     }
@@ -221,7 +212,6 @@ const handleBirthdayChange = (rawValue) => {
       newTelefoneFixo = `${newTelefoneFixo.slice(0, 9)}-${newTelefoneFixo.slice(9)}`;
     }
 
-    // Atualiza o estado do telefone fixo
 	if(newTelefoneFixo.length<=14){
 		setTelefone(newTelefoneFixo);
 	}
@@ -256,6 +246,7 @@ const handleBirthdayChange = (rawValue) => {
           <Typography sx={{ mt: 2, mb: 1 }}>
             Cadastro Completo
           </Typography>
+		  <Finish name={name} birthday={birthday} rua={rua} numero={numero} cidade={cidade} estado={estado} celular={celular}/>
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Box sx={{ flex: '1 1 auto' }} />
             <Button onClick={handleReset}>Reset</Button>
@@ -308,6 +299,8 @@ const handleBirthdayChange = (rawValue) => {
 				{!isValidCelular && <p style={{ color: 'red' }}>O celular está incompleto</p>}
               </div>
             </>}
+			
+			 
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Button
               color="inherit"
@@ -324,6 +317,8 @@ const handleBirthdayChange = (rawValue) => {
           </Box>
         </React.Fragment>
       )}
+	  
+	  
     </Box>
   );
 }
