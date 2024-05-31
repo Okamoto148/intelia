@@ -11,6 +11,11 @@ import SendIcon from '@mui/icons-material/Send';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import StarBorder from '@mui/icons-material/StarBorder';
+import PersonIcon from '@mui/icons-material/Person';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import AddRoadIcon from '@mui/icons-material/AddRoad';
+import LocationCityIcon from '@mui/icons-material/LocationCity';
+import SmartphoneIcon from '@mui/icons-material/Smartphone';
 
 export default function NestedList({name, birthday, rua, numero, cidade, estado, celular}) {
   const [open, setOpen] = React.useState(true);
@@ -32,31 +37,31 @@ export default function NestedList({name, birthday, rua, numero, cidade, estado,
     >
       <ListItemButton>
         <ListItemIcon>
-          <SendIcon />
+          <PersonIcon />
         </ListItemIcon>
         <ListItemText primary={`Nome: ${name}`} />
       </ListItemButton>
       <ListItemButton>
         <ListItemIcon>
-          <DraftsIcon />
+          <CalendarTodayIcon />
         </ListItemIcon>
         <ListItemText primary={`Data de nascimento: ${birthday}`} />
       </ListItemButton>
       <ListItemButton onClick={handleClick}>
         <ListItemIcon>
-          <InboxIcon />
+          <AddRoadIcon />
         </ListItemIcon>
         <ListItemText primary={`Endereço: ${rua}, ${numero}`} />
       </ListItemButton>
 	  <ListItemButton>
         <ListItemIcon>
-          <SendIcon />
+          <LocationCityIcon />
         </ListItemIcon>
         <ListItemText primary={`Cidade: ${cidade} - ${estado}`} />
       </ListItemButton>
 	  <ListItemButton>
         <ListItemIcon>
-          <SendIcon />
+          <SmartphoneIcon />
         </ListItemIcon>
         <ListItemText primary={`Celular: ${celular}`} />
       </ListItemButton>
