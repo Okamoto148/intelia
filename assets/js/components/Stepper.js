@@ -7,6 +7,15 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Input from './Input';
 import axios from 'axios';
+import Grid from '@mui/material/Grid';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import HomeIcon from '@mui/icons-material/Home';
+import AddRoadIcon from '@mui/icons-material/AddRoad';
+import LocationCityIcon from '@mui/icons-material/LocationCity';
+import Looks3Icon from '@mui/icons-material/Looks3';
+import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
+
 
 const steps = ['Dados Pessoais', 'Endereço', 'Contato'];
 
@@ -19,17 +28,71 @@ export default function HorizontalLinearStepper() {
   const [endereco, setEndereco] = React.useState('');
   const [error, setError] = React.useState('');
   const [rua, setRua] = React.useState('');
-
+  const [numero, setNumero] = React.useState('');
+  const [cidade, setCidade] = React.useState('');
+  const [estado, setEstado] = React.useState('');
+  const [telefone, setTelefone] = React.useState('');
+  const [celular, setCelular] = React.useState('');
+  
+  //Constantes para validação dos dados
+  const [isValidCEP, setIsValidCEP] = React.useState(true); 
+  const [isValidNome, setIsValidNome] = React.useState(true); 
+  const [isValidData, setIsValidData] = React.useState(true); 
+  const [isValidTelefone, setIsValidTelefone] = React.useState(true); 
+  const [isValidCelular, setIsValidCelular] = React.useState(true); 
+  
+  //Faz a requisição para descobrir o endereço e a validação do CEP
   React.useEffect(() => {
-    if (CEP.length === 8) {
-      axios.get(`https://viacep.com.br/ws/${CEP}/json/`)
+    if (CEP.length === 9) {
+      axios.get(`https://viacep.com.br/ws/${CEP.replace(/\D/g, '')}/json/`)
         .then((response) => {
           console.log(response.data);
           setEndereco(response.data);
 		  setRua(response.data.logradouro);
+		  setCidade(response.data.localidade);
+		  setEstado(response.data.uf);
+		  console.log(response.data.uf);
+		  setIsValidCEP(true)
         });
-    }
+    }else{
+		setEndereco('');
+		setRua('');
+		setCidade('');
+		setEstado('');
+		setIsValidCEP(false);
+	}
   }, [CEP]);
+  
+  React.useEffect(()=>{
+	  if(name.split(' ').length>1){
+		  setIsValidNome(true);
+	  }else{
+		  setIsValidNome(false);
+	  }
+	  
+	  if(telefone.length==14 || telefone.length<=1){
+		  setIsValidTelefone(true)
+	  }else{
+		  setIsValidTelefone(false)
+	  }
+	  
+	  if(celular.length==15 || celular.length<=1){
+		  setIsValidCelular(true)
+	  }else{
+		  setIsValidCelular(false)
+	  }
+	  
+	  if(birthday.length==10 || birthday.length<=1){
+		  setIsValidTelefone(true)
+	  }else{
+		  setIsValidTelefone(false)
+	  }
+  },[name, celular, telefone,birthday])
+  
+  
+  
+  
+  
 
   const isStepOptional = (step) => {
     return step === 1;
@@ -100,31 +163,63 @@ const handleBirthdayChange = (rawValue) => {
   }
 };
 
+  const handleCepChange = (event) => {
+    let newCep = event;
 
+    newCep = newCep.replace(/\D/g, '');
 
-  /* Validador de data
-  const validateDate = (date) => {
-    const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
-    if (!regex.test(date)) {
-      return false;
+    if (newCep.length > 5) {
+      newCep = newCep.replace(/^(\d{5})(\d)/, '$1-$2');
     }
 
-    const [day, month, year] = date.split('/').map(Number);
-    const dateObj = new Date(year, month - 1, day);
-    return (
-      dateObj.getFullYear() === year &&
-      dateObj.getMonth() === month - 1 &&
-      dateObj.getDate() === day
-    );
+	if (newCep.length <= 9) {
+		setCEP(newCep);
+	};
+  }
+  
+  const handleCelularChange = (event) => {
+    let newCelular = event;
+
+    // Remove caracteres não numéricos
+    newCelular = newCelular.replace(/\D/g, '');
+
+    // Aplica a máscara de celular (19) 99999-9999
+    if (newCelular.length > 2) {
+      newCelular = `(${newCelular.slice(0, 2)}) ${newCelular.slice(2)}`;
+    }
+    if (newCelular.length > 8) {
+      newCelular = `${newCelular.slice(0, 10)}-${newCelular.slice(10)}`;
+    }
+
+    // Atualiza o estado do celular
+	if(newCelular.length<=15){
+		setCelular(newCelular);
+	}
+  };
+  
+  
+  const handleTelefoneFixoChange = (event) => {
+    let newTelefoneFixo = event;
+
+    // Remove caracteres não numéricos
+    newTelefoneFixo = newTelefoneFixo.replace(/\D/g, '');
+
+    // Aplica a máscara de telefone fixo (19) 9999-9999
+    if (newTelefoneFixo.length > 2) {
+      newTelefoneFixo = `(${newTelefoneFixo.slice(0, 2)}) ${newTelefoneFixo.slice(2)}`;
+    }
+    if (newTelefoneFixo.length > 7) {
+      newTelefoneFixo = `${newTelefoneFixo.slice(0, 9)}-${newTelefoneFixo.slice(9)}`;
+    }
+
+    // Atualiza o estado do telefone fixo
+	if(newTelefoneFixo.length<=14){
+		setTelefone(newTelefoneFixo);
+	}
+    
   };
 
-  const handleBirthdayBlur = () => {
-    if (!validateDate(birthday)) {
-      setError('Data inválida. Use o formato DD/MM/AAAA.');
-    } else {
-      setError('');
-    }
-  };*/
+
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -159,27 +254,49 @@ const handleBirthdayChange = (rawValue) => {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }}>{steps[activeStep]}</Typography>
+          <Typography sx={{ mt: 2, mb: 1, ml: 1 }}><span style={{marginRight:'10px'}}>{(activeStep+1==1)&&<AccountCircle />}
+              {(activeStep+1==2)&&<LocationCityIcon />}{(activeStep+1==3)&&<PhoneAndroidIcon />}</span>{steps[activeStep]}</Typography>
           {activeStep === 0 &&
             <>
               <div>
                 <Input activeStep={activeStep} value={name} icon1={true} onChangeInput={(e) => setName(capitalizeWords(e))} label='Nome' />
+				{!isValidNome && <p style={{ color: 'red' }}>Favor colocar o nome completo</p>}
                 <Input activeStep={activeStep} value2={birthday} icon2={true} onChangeInput2={handleBirthdayChange} label='Data de nascimento' />
-                {error && <p style={{ color: 'red' }}>{error}</p>}
+                {!isValidData && <p style={{ color: 'red' }}>A data de nascimento precisa estar no formato: DD/MM/AAAA</p>}
               </div>
             </>}
           {activeStep === 1 &&
             <>
               <div>
-                <Input activeStep={activeStep} value={CEP} icon1={true} onChangeInput={(e) => setCEP(e)} label='CEP' />
-				<Input activeStep={activeStep} value={rua} icon2={true} onChangeInput2={(e) => setRua(e)} label='Endereço' />
+                <Input activeStep={activeStep} value={CEP} icon1={true} onChangeInput={handleCepChange} label='CEP' />
+				{!isValidCEP && <p style={{ color: 'red' }}>O CEP está incompleto</p>}
+				<Grid container>
+				<Grid  xs={8}>
+				  <Input activeStep={activeStep} value2={rua} icon2={true} onChangeInput2={(e) => setRua(e)} label2='Endereço'/>
+				</Grid>
+				<Grid  xs={4}>
+				  <Input activeStep={activeStep} value3={numero} icon3={true} onChangeInput3={(e) => setNumero(e)} label3='Número' />
+				</Grid>
+				</Grid>
+				
+				<Grid container>
+				<Grid  xs={6}>
+				  <Input activeStep={activeStep} value4={cidade} icon4={true} onChangeInput4={(e) => setCidade(e)} label4='Cidade' />
+				</Grid>
+				<Grid  xs={6}>
+				  <Input activeStep={activeStep} value5={estado} icon5={true} onChangeInput5={(e) => setEstado(e)} label5='Estado' />
+				</Grid>
+				</Grid>
+				
               </div>
             </>}
           {activeStep === 2 &&
             <>
               <div>
-                <Input activeStep={activeStep} value={name} icon1={true} onChangeInput={(e) => setName(capitalizeWords(e))} label='Nome' />
-                <Input activeStep={activeStep} value={birthday} icon2={true} onChangeInput2={(e) => setBirthday(handleBirthdayChange(e))} label='Data de nascimento' />
+                <Input activeStep={activeStep} value={telefone} icon1={true} onChangeInput={handleTelefoneFixoChange} label='Telefone fixo' />
+				{!isValidTelefone && <p style={{ color: 'red' }}>O telefone está incompleto</p>}
+                <Input activeStep={activeStep} value2={celular} icon2={true} onChangeInput2={handleCelularChange} label='Celular' />
+				{!isValidCelular && <p style={{ color: 'red' }}>O celular está incompleto</p>}
               </div>
             </>}
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>

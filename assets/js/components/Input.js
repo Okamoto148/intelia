@@ -9,13 +9,28 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import HomeIcon from '@mui/icons-material/Home';
 import AddRoadIcon from '@mui/icons-material/AddRoad';
+import LocationCityIcon from '@mui/icons-material/LocationCity';
+import Looks3Icon from '@mui/icons-material/Looks3';
 
-export default function InputWithIcon({onChangeInput, onChangeInput2, value, value2, activeStep, icon1, icon2, icon3, icon4, icon5, label,label2}) {
+
+export default function InputWithIcon({onChangeInput, onChangeInput2, onChangeInput3, onChangeInput4, onChangeInput5, value, value2, value3, value4, value5, activeStep, icon1, icon2, icon3, icon4, icon5, label,label2,label3,label4,label5}) {
     function handleInput(event){
         onChangeInput(event.currentTarget.value)
     }
     function handleInput2(event){
         onChangeInput2(event.currentTarget.value)
+    }
+	
+	function handleInput3(event){
+        onChangeInput3(event.currentTarget.value)
+    }
+	
+	function handleInput4(event){
+        onChangeInput4(event.currentTarget.value)
+    }
+	
+	function handleInput5(event){
+        onChangeInput5(event.currentTarget.value)
     }
 
   return (
@@ -28,12 +43,7 @@ export default function InputWithIcon({onChangeInput, onChangeInput2, value, val
           onChange={handleInput}
           value={value}
           id="input-with-icon-adornment"
-          startAdornment={
-            <InputAdornment position="start">
-              {(activeStep+1==1)&&<AccountCircle />}
-              {(activeStep+1==2)&&<HomeIcon />}
-            </InputAdornment>
-          }
+          
         />}
 		
         <InputLabel htmlFor="input-with-icon2-adornment" >
@@ -43,57 +53,38 @@ export default function InputWithIcon({onChangeInput, onChangeInput2, value, val
           onChange={handleInput2}
           value={value2}
           id="input-with-icon2-adornment"
-          startAdornment={
-            <InputAdornment position="start">
-              {(activeStep+1==1)&&<CalendarTodayIcon />}
-			  {(activeStep+1==2)&&<HomeIcon />}
-            </InputAdornment>
-          }
+     
         />}
 		
 		 <InputLabel htmlFor="input-with-icon-adornment" >
-          {label}
+          {label3}
         </InputLabel>
         {icon3&&<Input
-          onChange={handleInput}
-          value={value}
+          onChange={handleInput3}
+          value={value3}
           id="input-with-icon-adornment"
-          startAdornment={
-            <InputAdornment position="start">
-              {(activeStep+1==1)&&<AccountCircle />}
-              {(activeStep+1==2)&&<AddRoadIcon />}
-            </InputAdornment>
-          }
+         
         />}
 		
 		 <InputLabel htmlFor="input-with-icon-adornment" >
-          {label}
+          {label4}
         </InputLabel>
         {icon4&&<Input
-          onChange={handleInput}
-          value={value}
+          onChange={handleInput4}
+          value={value4}
           id="input-with-icon-adornment"
-          startAdornment={
-            <InputAdornment position="start">
-              {(activeStep+1==1)&&<AccountCircle />}
-              {(activeStep+1==2)&&<HomeIcon />}
-            </InputAdornment>
-          }
+     
+          
         />}
 		
 		 <InputLabel htmlFor="input-with-icon-adornment" >
-          {label}
+          {label5}
         </InputLabel>
         {icon5&&<Input
-          onChange={handleInput}
-          value={value}
+          onChange={handleInput5}
+          value={value5}
           id="input-with-icon-adornment"
-          startAdornment={
-            <InputAdornment position="start">
-              {(activeStep+1==1)&&<AccountCircle />}
-              {(activeStep+1==2)&&<HomeIcon />}
-            </InputAdornment>
-          }
+   
         />}
       </FormControl>
       
