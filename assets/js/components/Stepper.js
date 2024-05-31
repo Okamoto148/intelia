@@ -37,56 +37,65 @@ export default function HorizontalLinearStepper() {
   //Constantes para validação dos dados
   const [isValidCEP, setIsValidCEP] = React.useState(true); 
   const [isValidNome, setIsValidNome] = React.useState(true); 
-  const [isValidData, setIsValidData] = React.useState(true); 
+  const [isValidBirthday, setIsValidBirthday] = React.useState(true); 
   const [isValidTelefone, setIsValidTelefone] = React.useState(true); 
   const [isValidCelular, setIsValidCelular] = React.useState(true); 
   
   //Faz a requisição para descobrir o endereço e a validação do CEP
   React.useEffect(() => {
-    if (CEP.length === 9) {
+        if (CEP.length === 9) {
       axios.get(`https://viacep.com.br/ws/${CEP.replace(/\D/g, '')}/json/`)
         .then((response) => {
           console.log(response.data);
           setEndereco(response.data);
-		  setRua(response.data.logradouro);
-		  setCidade(response.data.localidade);
-		  setEstado(response.data.uf);
-		  console.log(response.data.uf);
-		  setIsValidCEP(true)
+          setRua(response.data.logradouro);
+          setCidade(response.data.localidade);
+          setEstado(response.data.uf);
+          setIsValidCEP(true);
+        })
+        .catch(() => {
+          setIsValidCEP(false);
         });
-    }else{
-		setEndereco('');
-		setRua('');
-		setCidade('');
-		setEstado('');
-		setIsValidCEP(false);
-	}
+    } else {
+      setEndereco('');
+      setRua('');
+      setCidade('');
+      setEstado('');
+
+      if (CEP.length > 0 && CEP.length < 9) {
+        setIsValidCEP(false);
+      } else {
+        setIsValidCEP(true);
+      }
+    }
+    console.log('CEP.length', CEP.length);
+
   }, [CEP]);
   
   React.useEffect(()=>{
-	  if(name.split(' ').length>1){
-		  setIsValidNome(true);
-	  }else{
-		  setIsValidNome(false);
-	  }
-	  
-	  if(telefone.length==14 || telefone.length<=1){
-		  setIsValidTelefone(true)
-	  }else{
-		  setIsValidTelefone(false)
-	  }
-	  
-	  if(celular.length==15 || celular.length<=1){
-		  setIsValidCelular(true)
-	  }else{
-		  setIsValidCelular(false)
-	  }
-	  
-	  if(birthday.length==10 || birthday.length<=1){
-		  setIsValidTelefone(true)
-	  }else{
-		  setIsValidTelefone(false)
-	  }
+	  if (name.split(' ').length > 1 || name.length <= 1) {
+      setIsValidNome(true);
+    } else {
+      setIsValidNome(false);
+    }
+
+    if (telefone.length === 14 || telefone.length <= 1) {
+      setIsValidTelefone(true);
+    } else {
+      setIsValidTelefone(false);
+    }
+
+    if (celular.length === 15 || celular.length <= 1) {
+      setIsValidCelular(true);
+    } else {
+      setIsValidCelular(false);
+    }
+
+    if (birthday.length === 10 || birthday.length <= 1) {
+      setIsValidBirthday(true);
+    } else {
+      setIsValidBirthday(false);
+    }
   },[name, celular, telefone,birthday])
   
   
@@ -262,7 +271,7 @@ const handleBirthdayChange = (rawValue) => {
                 <Input activeStep={activeStep} value={name} icon1={true} onChangeInput={(e) => setName(capitalizeWords(e))} label='Nome' />
 				{!isValidNome && <p style={{ color: 'red' }}>Favor colocar o nome completo</p>}
                 <Input activeStep={activeStep} value2={birthday} icon2={true} onChangeInput2={handleBirthdayChange} label='Data de nascimento' />
-                {!isValidData && <p style={{ color: 'red' }}>A data de nascimento precisa estar no formato: DD/MM/AAAA</p>}
+                {!isValidBirthday && <p style={{ color: 'red' }}>A data de nascimento precisa estar no formato: DD/MM/AAAA</p>}
               </div>
             </>}
           {activeStep === 1 &&
